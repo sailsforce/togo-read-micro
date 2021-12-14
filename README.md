@@ -1,3 +1,5 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/sailsforce/togo-read-micro/badge)](https://www.codefactor.io/repository/github/sailsforce/togo-read-micro) ![security rating](./badges/securityRating.svg) ![vulnerabilities](./badges/vulnerabilities.svg) [![codecov](https://codecov.io/gh/sailsforce/inv-read-micro/branch/main/graph/badge.svg?token=U1Q38I84A2)](https://codecov.io/gh/sailsforce/inv-read-micro)
+
 # togo-read-micro
 Togo read micro-service
 
@@ -29,4 +31,10 @@ sonar-scanner \
   -Dsonar.sources=. \
   -Dsonar.host.url=${SONAR_HOST_URL} \
   -Dsonar.login=${SONAR_LOGIN}
-``` 
+```
+
+## Update SonarQube badges
+```
+curl ${badge_url} > ./badges/securityRating.svg
+curl ${badge_url} > ./badges/vulnerabilities.svg
+```
