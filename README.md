@@ -14,5 +14,19 @@ doppler run --command="./bin/togo-read"
 
 ## Run Tests Using Doppler
 ```
-doppler run --command="go test ./tests"
+doppler run --command="go test -v ./tests -coverprofile=./coverage.out -coverpkg ./..."
 ```
+
+## Upload to Codecov
+``` 
+./codecov -t ${CODECOV_TOKEN}
+``` 
+
+## Run SonarQube
+```
+sonar-scanner \
+  -Dsonar.projectKey=togo-read-micro \
+  -Dsonar.sources=. \
+  -Dsonar.host.url=${SONAR_HOST_URL} \
+  -Dsonar.login=${SONAR_LOGIN}
+``` 
