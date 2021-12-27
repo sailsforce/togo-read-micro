@@ -26,6 +26,8 @@ doppler run --command="go test -v ./tests -coverprofile=./coverage.out -coverpkg
 
 ## Run SonarQube
 ```
+brew install sonar-scanner
+
 sonar-scanner \
   -Dsonar.projectKey=togo-read-micro \
   -Dsonar.sources=. \
