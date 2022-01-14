@@ -19,6 +19,11 @@ doppler run --command="./bin/togo-read"
 doppler run --command="go test -v ./tests -coverprofile=./coverage.out -coverpkg ./..."
 ```
 
+## See Coverage Report
+```
+go tool cover -html=./tests/coverage.out
+```
+
 ## Upload to Codecov
 ``` 
 ./codecov -t ${CODECOV_TOKEN}
