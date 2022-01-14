@@ -29,6 +29,11 @@ go tool cover -html=./tests/coverage.out
 ./codecov -t ${CODECOV_TOKEN}
 ``` 
 
+## Generate Coverage and Test Reports for SonarQube
+```
+go test ./tests -coverprofile=./tests/coverage.out -coverpkg ./... -json > ./tests/test-report.out
+```
+
 ## Run SonarQube
 ```
 brew install sonar-scanner
