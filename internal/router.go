@@ -7,6 +7,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
 	logKit "github.com/sailsforce/gomicro-kit/logger"
+	middlewareKit "github.com/sailsforce/gomicro-kit/middleware"
 	"github.com/sailsforce/togo-read-micro/internal/config"
 	"github.com/sailsforce/togo-read-micro/internal/rest"
 )
@@ -18,6 +19,7 @@ func Routes() *chi.Mux {
 		middleware.RedirectSlashes,
 		middleware.RequestID,
 		logKit.NewStructuredLogger(config.Logger),
+		middlewareKit.Headers,
 		middleware.Recoverer)
 
 	r.Route("/v1", func(r chi.Router) {
