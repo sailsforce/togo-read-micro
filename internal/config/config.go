@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 	"os"
+	"time"
 
 	_ "github.com/lib/pq"
 	"github.com/sailsforce/gomicro-kit/utils"
@@ -16,12 +17,29 @@ import (
 
 var Psql *gorm.DB
 var Logger *logrus.Logger
+var RV RuntimeVars
+
+type RuntimeVars struct {
+	DatabaseURL    string
+	LogLevel       string
+	AppName        string
+	ReleaseDate    string
+	ReleaseVersion string
+	Slug           string
+}
 
 // NewServiceConfig : function that inits the database, logger, and other parts of the config.
 // env variables needed
 // LOG_LEVEL, DATABASE_URL
 func NewServiceConfig(withDb bool) error {
 	log.Println("Creating Togo Read Micro-service config...")
+	RV.LogLevel = os.Getenv("LOG_LEVEL")
+	RV.DatabaseURL = os.Getenv("DATABASE_URL")
+	RV.AppName = os.Getenv("APP_NAME")
+	RV.ReleaseDate = time.Now().String()
+	RV.ReleaseVersion = os.Getenv("RELEASE_VERSION")
+	RV.Slug = os.Getenv("RELEASE_SLUG")
+
 	log.Println("init logger...")
 	// create logger using sirupsen/Logrus
 	Logger = logrus.New()
@@ -30,7 +48,7 @@ func NewServiceConfig(withDb bool) error {
 		FullTimestamp: true,
 	})
 	Logger.SetOutput(os.Stdout)
-	logLvl, err := logrus.ParseLevel(os.Getenv("LOG_LEVEL"))
+	logLvl, err := logrus.ParseLevel(RV.LogLevel)
 	if err != nil {
 		Logger.Info("using default log level")
 		logLvl = 4
@@ -42,9 +60,8 @@ func NewServiceConfig(withDb bool) error {
 	// GORM setup
 	log.Println("init Gorm DB...")
 	if withDb {
-		dbUrl := os.Getenv("DATABASE_URL")
-		Logger.Info("connecting to db: ", utils.GetDSN(dbUrl))
-		db, err := sql.Open("postgres", utils.GetDSN(dbUrl))
+		Logger.Info("connecting to db: ", utils.GetDSN(RV.DatabaseURL))
+		db, err := sql.Open("postgres", utils.GetDSN(RV.DatabaseURL))
 		if err != nil {
 			Logger.Error("sql connection error")
 			return err
