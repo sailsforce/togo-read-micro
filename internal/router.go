@@ -6,8 +6,9 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
+	logKit "github.com/sailsforce/gomicro-kit/logger"
+	"github.com/sailsforce/togo-read-micro/internal/config"
 	"github.com/sailsforce/togo-read-micro/internal/rest"
-	"github.com/sailsforce/togo-read-micro/internal/utils"
 )
 
 func Routes() *chi.Mux {
@@ -16,6 +17,7 @@ func Routes() *chi.Mux {
 	r.Use(render.SetContentType(render.ContentTypeJSON),
 		middleware.RedirectSlashes,
 		middleware.RequestID,
+		logKit.NewStructuredLogger(config.Logger),
 		middleware.Recoverer)
 
 	r.Route("/v1", func(r chi.Router) {
@@ -23,8 +25,7 @@ func Routes() *chi.Mux {
 	})
 
 	r.Get("/", func(rw http.ResponseWriter, req *http.Request) {
-		logger := utils.LogRequestId(req, "")
-		logger.Debug(rw.Write([]byte("online")))
+		config.Logger.Debug(rw.Write([]byte("online")))
 	})
 
 	return r

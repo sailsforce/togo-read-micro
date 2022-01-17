@@ -7,11 +7,11 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
 
+	logKit "github.com/sailsforce/gomicro-kit/logger"
 	"github.com/sailsforce/gomicro-kit/models"
 	micro "github.com/sailsforce/gomicro-kit/utils"
 
 	"github.com/sailsforce/togo-read-micro/internal/config"
-	"github.com/sailsforce/togo-read-micro/internal/utils"
 )
 
 func HeartbeatRotues() *chi.Mux {
@@ -22,7 +22,7 @@ func HeartbeatRotues() *chi.Mux {
 }
 
 func GetHeartbeat(rw http.ResponseWriter, req *http.Request) {
-	logger := utils.LogRequestId(req, "heartbeat")
+	logger := logKit.GetLogEntry(req)
 	dbOnline := false
 
 	logger.Info("pinging database... ", config.RV.DatabaseURL)
