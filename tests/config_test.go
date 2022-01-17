@@ -32,5 +32,12 @@ var _ = Describe("Config", func() {
 				Expect(config.Logger.GetLevel().String()).To(Equal("info"))
 			})
 		})
+		Context("Database", func() {
+			It("should error with bad db conn string", func() {
+				err := config.NewServiceConfig(true)
+				Expect(err).To(Not(BeNil()))
+				Expect(err.Error()).To(Equal("dial tcp [::1]:5555: connect: connection refused"))
+			})
+		})
 	})
 })
