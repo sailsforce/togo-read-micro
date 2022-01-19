@@ -34,6 +34,15 @@ go tool cover -html=./tests/coverage.out
 go test ./tests -coverprofile=./tests/coverage.out -coverpkg ./... -json > ./tests/test-report.out
 ```
 
+## Re-Generate GraphQL code whith Changes
+```
+go generate ./...
+
+or
+
+go run github.com/99designs/gqlgen generate
+```
+
 ## Run SonarQube
 ```
 brew install sonar-scanner
