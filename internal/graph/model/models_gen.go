@@ -2,12 +2,227 @@
 
 package model
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
+import (
+	"fmt"
+	"io"
+	"strconv"
+	"time"
+)
+
+type Node interface {
+	IsNode()
+}
+
+type Article struct {
+	ID             string          `json:"id"`
+	CreatedAt      time.Time       `json:"createdAt"`
+	UpdatedAt      time.Time       `json:"updatedAt"`
+	DeletedAt      *time.Time      `json:"deletedAt"`
+	LastModifiedBy *User           `json:"lastModifiedBy"`
+	Title          string          `json:"title"`
+	Category       ArticleCategory `json:"category"`
+	Body           string          `json:"body"`
+	ArticleImg     string          `json:"articleImg"`
+	Views          *int            `json:"views"`
+	Shares         *int            `json:"shares"`
+}
+
+func (Article) IsNode() {}
+
+type Author struct {
+	ID        string     `json:"id"`
+	CreatedAt time.Time  `json:"createdAt"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	DeletedAt *time.Time `json:"deletedAt"`
+	Name      string     `json:"name"`
+	Website   *string    `json:"website"`
+}
+
+func (Author) IsNode() {}
+
+type Breed struct {
+	Name       string  `json:"name"`
+	Percentage float64 `json:"percentage"`
+}
+
+type DogProfile struct {
+	ID             string     `json:"id"`
+	CreatedAt      time.Time  `json:"createdAt"`
+	UpdatedAt      time.Time  `json:"updatedAt"`
+	DeletedAt      *time.Time `json:"deletedAt"`
+	LastModifiedBy *User      `json:"lastModifiedBy"`
+	Owner          *User      `json:"owner"`
+	Name           string     `json:"name"`
+	DogImg         string     `json:"dogImg"`
+	Age            int        `json:"age"`
+	WeightLbs      int        `json:"weightLbs"`
+	Size           DogSize    `json:"size"`
+	Birthday       time.Time  `json:"birthday"`
+	Breed          []*Breed   `json:"breed"`
+}
+
+func (DogProfile) IsNode() {}
+
+type ListUsersInput struct {
+	Limit   *int    `json:"limit"`
+	SinceID *string `json:"since_id"`
 }
 
 type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID             string        `json:"id"`
+	CreatedAt      time.Time     `json:"createdAt"`
+	UpdatedAt      time.Time     `json:"updatedAt"`
+	DeletedAt      *time.Time    `json:"deletedAt"`
+	LastModifiedBy *User         `json:"lastModifiedBy"`
+	Role           Role          `json:"role"`
+	Email          string        `json:"email"`
+	Phone          string        `json:"phone"`
+	Name           string        `json:"name"`
+	Password       string        `json:"password"`
+	UserColor      string        `json:"userColor"`
+	UserImg        string        `json:"userImg"`
+	DogProfiles    []*DogProfile `json:"dogProfiles"`
+}
+
+func (User) IsNode() {}
+
+type ArticleCategory string
+
+const (
+	ArticleCategoryHowTo       ArticleCategory = "HOW_TO"
+	ArticleCategoryLifeStories ArticleCategory = "LIFE_STORIES"
+	ArticleCategoryTipsTricks  ArticleCategory = "TIPS_TRICKS"
+	ArticleCategoryTravel      ArticleCategory = "TRAVEL"
+	ArticleCategoryCityLife    ArticleCategory = "CITY_LIFE"
+)
+
+var AllArticleCategory = []ArticleCategory{
+	ArticleCategoryHowTo,
+	ArticleCategoryLifeStories,
+	ArticleCategoryTipsTricks,
+	ArticleCategoryTravel,
+	ArticleCategoryCityLife,
+}
+
+func (e ArticleCategory) IsValid() bool {
+	switch e {
+	case ArticleCategoryHowTo, ArticleCategoryLifeStories, ArticleCategoryTipsTricks, ArticleCategoryTravel, ArticleCategoryCityLife:
+		return true
+	}
+	return false
+}
+
+func (e ArticleCategory) String() string {
+	return string(e)
+}
+
+func (e *ArticleCategory) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ArticleCategory(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ARTICLE_CATEGORY", str)
+	}
+	return nil
+}
+
+func (e ArticleCategory) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type DogSize string
+
+const (
+	DogSizeXSmall DogSize = "X_SMALL"
+	DogSizeSmall  DogSize = "SMALL"
+	DogSizeMedium DogSize = "MEDIUM"
+	DogSizeLarge  DogSize = "LARGE"
+	DogSizeXLarge DogSize = "X_LARGE"
+)
+
+var AllDogSize = []DogSize{
+	DogSizeXSmall,
+	DogSizeSmall,
+	DogSizeMedium,
+	DogSizeLarge,
+	DogSizeXLarge,
+}
+
+func (e DogSize) IsValid() bool {
+	switch e {
+	case DogSizeXSmall, DogSizeSmall, DogSizeMedium, DogSizeLarge, DogSizeXLarge:
+		return true
+	}
+	return false
+}
+
+func (e DogSize) String() string {
+	return string(e)
+}
+
+func (e *DogSize) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = DogSize(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid DOG_SIZE", str)
+	}
+	return nil
+}
+
+func (e DogSize) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type Role string
+
+const (
+	RoleAdmin   Role = "ADMIN"
+	RoleMod     Role = "MOD"
+	RoleTester  Role = "TESTER"
+	RoleUser    Role = "USER"
+	RoleBlocked Role = "BLOCKED"
+)
+
+var AllRole = []Role{
+	RoleAdmin,
+	RoleMod,
+	RoleTester,
+	RoleUser,
+	RoleBlocked,
+}
+
+func (e Role) IsValid() bool {
+	switch e {
+	case RoleAdmin, RoleMod, RoleTester, RoleUser, RoleBlocked:
+		return true
+	}
+	return false
+}
+
+func (e Role) String() string {
+	return string(e)
+}
+
+func (e *Role) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = Role(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ROLE", str)
+	}
+	return nil
+}
+
+func (e Role) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
 }

@@ -1,28 +1,106 @@
-# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
-
-type Todo {
+interface Node {
   id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
 }
 
-type User {
+scalar Url
+scalar Time
+
+enum ARTICLE_CATEGORY {
+  HOW_TO
+  LIFE_STORIES
+  TIPS_TRICKS
+  TRAVEL
+  CITY_LIFE
+}
+
+enum DOG_SIZE {
+  X_SMALL
+  SMALL
+  MEDIUM
+  LARGE
+  X_LARGE
+}
+
+enum ROLE {
+  ADMIN
+  MOD
+  TESTER
+  USER
+  BLOCKED 
+}
+
+type User implements Node {
   id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
+  lastModifiedBy: User!
+  role: ROLE!
+  email: String!
+  phone: String!
   name: String!
+  password: String!
+  userColor: String!
+  userImg: Url!
+  dogProfiles: [DogProfile]
+}
+
+type DogProfile implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
+  lastModifiedBy: User!
+  owner: User!
+  name: String!
+  dogImg: Url!
+  age: Int!
+  weightLbs: Int!
+  size: DOG_SIZE!
+  birthday: Time!
+  breed: [Breed!]!
+}
+
+type Breed {
+  name: String!
+  percentage: Float!
+}
+
+type Article implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
+  lastModifiedBy: User!
+  title: String!
+  category: ARTICLE_CATEGORY!
+  body: String!
+  articleImg: Url!
+  views: Int
+  shares: Int
+}
+
+type Author implements Node {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time
+  name: String!
+  website: Url
 }
 
 type Query {
-  todos: [Todo!]!
+  users(limit: Int = 10, sort: String = "asc"): [User]
 }
 
-input NewTodo {
-  text: String!
-  userId: String!
+input ListUsersInput {
+  limit: Int
+  since_id: ID
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
+  users(params: ListUsersInput): [User]!
 }

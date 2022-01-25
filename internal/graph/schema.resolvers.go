@@ -6,7 +6,6 @@ package graph
 import (
 	"context"
 	"fmt"
-	"math/rand"
 
 	"github.com/sailsforce/togo-read-micro/internal/graph/generated"
 	"github.com/sailsforce/togo-read-micro/internal/graph/model"
@@ -14,23 +13,12 @@ import (
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
-type todoResolver struct{ *Resolver }
 
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	todo := &model.Todo{
-		Text:   input.Text,
-		ID:     fmt.Sprintf("T%d", rand.Int()),
-		UserID: input.UserID,
-	}
-	r.todos = append(r.todos, todo)
-	return todo, nil
+func (r *mutationResolver) Users(ctx context.Context, params *model.ListUsersInput) ([]*model.User, error) {
+	panic(fmt.Errorf("not implemented"))
 }
 
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	return r.todos, nil
-}
-
-func (r *todoResolver) User(ctx context.Context, obj *model.Todo) (*model.User, error) {
+func (r *queryResolver) Users(ctx context.Context, limit *int, sort *string) ([]*model.User, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
@@ -39,6 +27,3 @@ func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResol
 
 // Query returns generated.QueryResolver implementation.
 func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
-
-// Todo returns generated.TodoResolver implementation.
-func (r *Resolver) Todo() generated.TodoResolver { return &todoResolver{r} }
