@@ -25,6 +25,7 @@ type Article struct {
 	ArticleImg     string          `json:"articleImg"`
 	Views          *int            `json:"views"`
 	Shares         *int            `json:"shares"`
+	Author         *Author         `json:"author"`
 }
 
 func (Article) IsNode() {}
@@ -46,45 +47,50 @@ type Breed struct {
 }
 
 type DogProfile struct {
-	ID             string     `json:"id"`
-	CreatedAt      time.Time  `json:"createdAt"`
-	UpdatedAt      time.Time  `json:"updatedAt"`
-	DeletedAt      *time.Time `json:"deletedAt"`
-	LastModifiedBy *User      `json:"lastModifiedBy"`
-	Owner          *User      `json:"owner"`
-	Name           string     `json:"name"`
-	DogImg         string     `json:"dogImg"`
-	Age            int        `json:"age"`
-	WeightLbs      int        `json:"weightLbs"`
-	Size           DogSize    `json:"size"`
-	Birthday       time.Time  `json:"birthday"`
-	Breed          []*Breed   `json:"breed"`
+	ID        string     `json:"id"`
+	CreatedAt time.Time  `json:"createdAt"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	DeletedAt *time.Time `json:"deletedAt"`
+	Owner     *User      `json:"owner"`
+	Name      string     `json:"name"`
+	DogImg    string     `json:"dogImg"`
+	Age       int        `json:"age"`
+	WeightLbs int        `json:"weightLbs"`
+	Size      DogSize    `json:"size"`
+	Birthday  time.Time  `json:"birthday"`
+	Breed     []*Breed   `json:"breed"`
 }
 
 func (DogProfile) IsNode() {}
 
-type ListUsersInput struct {
-	Limit   *int    `json:"limit"`
-	SinceID *string `json:"since_id"`
+type NewUser struct {
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
+	Name     string `json:"name"`
+	Password string `json:"password"`
 }
 
 type User struct {
-	ID             string        `json:"id"`
-	CreatedAt      time.Time     `json:"createdAt"`
-	UpdatedAt      time.Time     `json:"updatedAt"`
-	DeletedAt      *time.Time    `json:"deletedAt"`
-	LastModifiedBy *User         `json:"lastModifiedBy"`
-	Role           Role          `json:"role"`
-	Email          string        `json:"email"`
-	Phone          string        `json:"phone"`
-	Name           string        `json:"name"`
-	Password       string        `json:"password"`
-	UserColor      string        `json:"userColor"`
-	UserImg        string        `json:"userImg"`
-	DogProfiles    []*DogProfile `json:"dogProfiles"`
+	ID          string        `json:"id"`
+	CreatedAt   time.Time     `json:"createdAt"`
+	UpdatedAt   time.Time     `json:"updatedAt"`
+	DeletedAt   *time.Time    `json:"deletedAt"`
+	Role        Role          `json:"role"`
+	Email       string        `json:"email"`
+	Phone       string        `json:"phone"`
+	Name        string        `json:"name"`
+	Password    string        `json:"password"`
+	UserColor   string        `json:"userColor"`
+	UserImg     string        `json:"userImg"`
+	DogProfiles []*DogProfile `json:"dogProfiles"`
 }
 
 func (User) IsNode() {}
+
+type UserCredentials struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
 
 type ArticleCategory string
 

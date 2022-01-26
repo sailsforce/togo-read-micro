@@ -6,7 +6,9 @@ package graph
 import (
 	"context"
 	"fmt"
+	"time"
 
+	"github.com/gofrs/uuid"
 	"github.com/sailsforce/togo-read-micro/internal/graph/generated"
 	"github.com/sailsforce/togo-read-micro/internal/graph/model"
 )
@@ -14,11 +16,41 @@ import (
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
 
-func (r *mutationResolver) Users(ctx context.Context, params *model.ListUsersInput) ([]*model.User, error) {
+func (r *mutationResolver) UserLogin(ctx context.Context, input model.UserCredentials) (*model.User, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
-func (r *queryResolver) Users(ctx context.Context, limit *int, sort *string) ([]*model.User, error) {
+func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
+	id := uuid.Must(uuid.NewV4())
+	user := &model.User{
+		ID:        id.String(),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		Role:      "USER",
+		Email:     input.Email,
+		Phone:     input.Phone,
+		Name:      input.Name,
+		Password:  input.Password,
+		UserColor: "000000",
+		UserImg:   "https://testimage.com",
+	}
+	r.users = append(r.users, user)
+
+	return user, nil
+}
+
+func (r *queryResolver) Me(ctx context.Context, id *string) (*model.User, error) {
+	me := &model.User{}
+	for _, v := range r.users {
+		if v.ID == *id {
+			me = v
+		}
+	}
+
+	return me, nil
+}
+
+func (r *queryResolver) Articles(ctx context.Context, limit *int, sort *string) ([]*model.Article, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 

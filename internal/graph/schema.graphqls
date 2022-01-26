@@ -37,7 +37,6 @@ type User implements Node {
   createdAt: Time!
   updatedAt: Time!
   deletedAt: Time
-  lastModifiedBy: User!
   role: ROLE!
   email: String!
   phone: String!
@@ -53,7 +52,6 @@ type DogProfile implements Node {
   createdAt: Time!
   updatedAt: Time!
   deletedAt: Time
-  lastModifiedBy: User!
   owner: User!
   name: String!
   dogImg: Url!
@@ -81,6 +79,7 @@ type Article implements Node {
   articleImg: Url!
   views: Int
   shares: Int
+  author: Author!
 }
 
 type Author implements Node {
@@ -93,14 +92,23 @@ type Author implements Node {
 }
 
 type Query {
-  users(limit: Int = 10, sort: String = "asc"): [User]
+  me(id: ID): User!
+  articles(limit: Int = 10, sort: String = "desc"): [Article]
 }
 
-input ListUsersInput {
-  limit: Int
-  since_id: ID
+input UserCredentials {
+  email: String! 
+  password: String!
+}
+
+input NewUser {
+  email: String!
+  phone: String!
+  name: String!
+  password: String!
 }
 
 type Mutation {
-  users(params: ListUsersInput): [User]!
+  userLogin(input: UserCredentials!): User!
+  createUser(input: NewUser!): User!
 }

@@ -6,6 +6,7 @@ require (
 	github.com/99designs/gqlgen v0.15.1
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-chi/render v1.0.1
+	github.com/gofrs/uuid v4.0.0+incompatible
 	github.com/lib/pq v1.10.2
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.17.0
