@@ -11,7 +11,7 @@ require (
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.17.0
 	github.com/quasilyte/go-ruleguard/dsl v0.3.10
-	github.com/sailsforce/gomicro-kit v0.0.0-20211209192930-e6e5daffdbd2
+	github.com/sailsforce/gomicro-kit v0.1.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/vektah/gqlparser/v2 v2.2.0
 	gorm.io/driver/postgres v1.2.3
@@ -51,4 +51,4 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace github.com/sailsforce/gomicro-kit => /Users/willmini/Development/go/src/github.com/sailsforce/gomicro-kit
+// replace github.com/sailsforce/gomicro-kit => /Users/willmini/Development/go/src/github.com/sailsforce/gomicro-kit
