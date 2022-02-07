@@ -42,9 +42,20 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 func (r *queryResolver) Me(ctx context.Context, id *string) (*model.User, error) {
 	me := &model.User{}
 	for _, v := range r.users {
-		if v.ID == *id {
-			me = v
+		// TODO: ??? is this right?
+		if v.ID != *id || v.DeletedAt != nil {
+			continue
 		}
+		me.ID = v.ID
+		me.CreatedAt = v.CreatedAt
+		me.UpdatedAt = v.CreatedAt
+		me.Role = v.Role
+		me.Email = v.Email
+		me.Phone = v.Phone
+		me.Name = v.Name
+		me.UserColor = v.UserColor
+		me.UserImg = v.UserImg
+		me.DogProfiles = v.DogProfiles
 	}
 
 	return me, nil
