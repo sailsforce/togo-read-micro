@@ -9,7 +9,7 @@ require (
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.17.0
 	github.com/quasilyte/go-ruleguard/dsl v0.3.10
-	github.com/sailsforce/gomicro-kit v0.0.0-20211209192930-e6e5daffdbd2
+	github.com/sailsforce/gomicro-kit v0.2.0
 	github.com/sirupsen/logrus v1.8.1
 	gorm.io/driver/postgres v1.2.3
 	gorm.io/gorm v1.22.5
@@ -17,6 +17,7 @@ require (
 
 require (
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.10.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
@@ -28,13 +29,15 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.4 // indirect
 	github.com/joho/godotenv v1.4.0 // indirect
+	github.com/newrelic/go-agent/v3 v3.15.2 // indirect
 	github.com/nxadm/tail v1.4.8 // indirect
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
 	golang.org/x/net v0.0.0-20210428140749-89ef3d95e781 // indirect
 	golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1 // indirect
 	golang.org/x/text v0.3.7 // indirect
+	google.golang.org/genproto v0.0.0-20190819201941-24fa4b261c55 // indirect
+	google.golang.org/grpc v1.27.0 // indirect
+	google.golang.org/protobuf v1.26.0 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
-
-replace github.com/sailsforce/gomicro-kit => /Users/willmini/Development/go/src/github.com/sailsforce/gomicro-kit
