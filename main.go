@@ -6,9 +6,16 @@ import (
 	"os"
 
 	_ "github.com/quasilyte/go-ruleguard/dsl"
+	kit_utils "github.com/sailsforce/gomicro-kit/utils"
 	"github.com/sailsforce/togo-read-micro/internal"
 	"github.com/sailsforce/togo-read-micro/internal/config"
 )
+
+func init() {
+	if err := kit_utils.InitEnv(); err != nil {
+		log.Println("error loading .env file: ", err)
+	}
+}
 
 func main() {
 	// 'true' is to indicate that we want a database with this config.
